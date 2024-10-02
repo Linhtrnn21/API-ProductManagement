@@ -17,6 +17,12 @@ namespace PM.Helper
             _logger.LogInformation($"User {userId} is requesting {action} at {DateTime.UtcNow}");
         }
 
+        public void LogFailedRequest(string userId, string message)
+        {
+            // Ghi lại thông tin yêu cầu thất bại
+            _logger.LogWarning($"User ID: {userId} - {message}");
+        }
+
         public void LogSuccessfulRequest(string userId, string action, int itemCount)
         {
             _logger.LogInformation($"Successfully retrieved {itemCount} items for user {userId} for action: {action}");

@@ -44,7 +44,11 @@ namespace PM.AppServices
             _loggingHelper.LogUserRequest(userId, $"get product by id = {id}");
 
             var product = await _unitOfWork.ProductRepository.GetByIdAsync(id);
-            if (product == null) throw new KeyNotFoundException($"Not found produt with id = {id}");
+            if (product == null)
+            {
+                _loggingHelper.LogFailedRequest(userId, $"Not found product with id = {id}");
+                return null;
+            }
 
             _loggingHelper.LogSuccessfulRequest(userId, $"get product with id = {id}", 1);
             return product;
@@ -93,7 +97,7 @@ namespace PM.AppServices
             var product = await _unitOfWork.ProductRepository.GetByIdAsync(id);
             if (product == null)
             {
-                throw new Exception($"Product with id {id} not found.");
+                throw new KeyNotFoundException($"Product with id {id} not found.");
             }
 
             // Xóa sản phẩm khỏi database

@@ -46,11 +46,13 @@ public class ProductController : ControllerBase
     {
         var userId = User?.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
         var product = await _productService.GetProductByIdAsync(id, userId);
+
         if (product == null)
         {
-            return NotFound();
+            return NotFound(new { message = $"Product with id = {id} not found" });
         }
-        return product;
+
+        return Ok(product);
     }
 
     /// <summary>
@@ -62,9 +64,16 @@ public class ProductController : ControllerBase
     [Authorize(Roles = "Admin")]
     public async Task<ActionResult<Product>> PostProduct(ProductRequest request)
     {
-        var userId = User?.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-        await _productService.AddProductAsync(request, userId);
-        return Ok();
+        try
+        {
+            var userId = User?.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+            await _productService.AddProductAsync(request, userId);
+            return Ok();
+        }
+        catch(Exception ex)
+        {
+            return StatusCode(500, $"Internal server error: {ex.Message}");
+        }
     }
 
     /// <summary>
@@ -78,8 +87,20 @@ public class ProductController : ControllerBase
     public async Task<IActionResult> PutProduct(int id, ProductRequest request)
     {
         var userId = User?.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-        await _productService.UpdateProductAsync(id, request, userId);
-        return Ok();
+
+        try
+        {
+            await _productService.UpdateProductAsync(id, request, userId);
+            return Ok();
+        }
+        catch (KeyNotFoundException ex)
+        {        
+            return NotFound(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"Internal server error: {ex.Message}");
+        }
     }
 
     /// <summary>
@@ -92,7 +113,18 @@ public class ProductController : ControllerBase
     public async Task<IActionResult> DeleteProduct(int id)
     {
         var userId = User?.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-        await _productService.DeleteProductAsync(id, userId);
-        return Ok();
+        try
+        {
+            await _productService.DeleteProductAsync(id, userId);
+            return Ok();
+        }
+        catch(KeyNotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"Internal server error: {ex.Message}");
+        }
     }
 }

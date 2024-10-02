@@ -47,14 +47,10 @@ public class UsersController : ControllerBase
     /// </summary>
     /// <param name="email"></param>
     /// <returns></returns>
-    [HttpDelete("delete-user-{email}")]
-    public async Task<IActionResult> DeleteUser(string email)
+    [HttpDelete("users/{email}")]
+    public async Task<IActionResult> DeleteUser([FromRoute]string email)
     {
-        var result = await _userService.DeleteUserAsync(email);
-        if (result.Succeeded)
-        {
-            return NoContent();
-        }
-        return BadRequest(result.Errors);
+        await _userService.DeleteUserAsync(email);
+        return Ok();
     }   
 }

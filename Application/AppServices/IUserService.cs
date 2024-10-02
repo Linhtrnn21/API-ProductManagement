@@ -12,7 +12,7 @@ namespace Application.AppServices
     public interface IUserService
     {
         Task UpdateUserAsync(UpdateRoleRequest request);
-        Task<IdentityResult> DeleteUserAsync(string email);
+        Task DeleteUserAsync(string email);
         string GenerateJwtToken(ApplicationUser user);
     }
 }

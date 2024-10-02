@@ -1,8 +1,5 @@
 ﻿using Application.AppServices;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using PM.Entities;
 using PM.Model;
 
 namespace API.Controllers
@@ -11,18 +8,13 @@ namespace API.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly SignInManager<ApplicationUser> _signInManager;
-        private readonly IConfiguration _configuration;
         private readonly IUserService _userService;
+        private readonly IAuthService _authService;
 
-        public AuthController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IConfiguration configuration,
-            IUserService userService)
+        public AuthController(IUserService userService, IAuthService authService)
         {
-            _userManager = userManager;
-            _signInManager = signInManager;
-            _configuration = configuration;
             _userService = userService;
+            _authService = authService;
         }
 
         /// <summary>
@@ -36,19 +28,12 @@ namespace API.Controllers
         {
             try
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-                var result = await _userManager.CreateAsync(user, model.Password);
-
-                if (result.Succeeded)
-                {
-                    await _userManager.AddToRoleAsync(user, "User");
-                    return Ok(new { Result = "User registered successfully" });
-                }
-
-                return BadRequest(result.Errors);
-            }catch(Exception ex)
+                await _authService.Regiter(model);
+                return Ok();
+            }
+            catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exception($"Message: {ex.Message}");
             }
         }
 
@@ -60,22 +45,15 @@ namespace API.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginModel model)
         {
-            var user = await _userManager.FindByEmailAsync(model.Email);
-            if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
+            try
             {
-                /*var claims = new List<Claim>
-                {
-                    new Claim(ClaimTypes.NameIdentifier, user.Id), // Lưu ID người dùng vào Claims
-                    new Claim(ClaimTypes.Name, user.UserName)
-                };
-
-                var claimsIdentity = new ClaimsIdentity(claims, "login");
-                await HttpContext.SignInAsync("Cookies", new ClaimsPrincipal(claimsIdentity));*/
-
-                var token = _userService.GenerateJwtToken(user);
-                return Ok(new { Token = token });
+                var token = await _authService.Login(model);
+                return Ok(token);
             }
-            return Unauthorized();
+            catch (KeyNotFoundException ex)
+            {
+                return Unauthorized($"Message: {ex.Message}");
+            }
         }
     }
 }

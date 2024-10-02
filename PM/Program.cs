@@ -70,6 +70,7 @@ builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<ILoggingHelper, LoggingHelper>();
 builder.Services.AddScoped<ICachingHelper, CachingHelper>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 // Cấu hình Identity
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>()

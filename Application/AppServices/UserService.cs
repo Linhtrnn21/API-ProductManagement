@@ -37,7 +37,8 @@ namespace Application.AppServices
                 {
                     user.Role = request.Role;
                     await _unitOfWork.CompleteAsync();
-                }               
+                }
+                throw new Exception("Not found user");
             }
             catch(Exception ex)
             {
@@ -45,14 +46,14 @@ namespace Application.AppServices
             }
         }
 
-        public async Task<IdentityResult> DeleteUserAsync(string email)
+        public async Task DeleteUserAsync(string email)
         {
             var user = await _userManager.FindByEmailAsync(email);
             if (user != null)
             {
                 await _userManager.DeleteAsync(user);
             }
-            return IdentityResult.Failed(new IdentityError { Description = "User not found." });
+            throw new Exception("Not found user");
         }
 
         public string GenerateJwtToken(ApplicationUser user)
