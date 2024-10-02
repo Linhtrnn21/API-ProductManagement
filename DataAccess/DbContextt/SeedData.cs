@@ -21,7 +21,7 @@ public static class SeedData
 
         // Tạo một user Admin mặc định
         var adminEmail = "admin@admin.com";
-        var adminPassword = "Admin@123";
+        var adminPassword = "Admin123@";
 
         var adminUser = await userManager.FindByEmailAsync(adminEmail);
         if (adminUser == null)

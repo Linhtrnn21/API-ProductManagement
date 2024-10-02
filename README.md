@@ -27,7 +27,9 @@ Dự án này là một ứng dụng API quản lý sản phẩm, cho phép ngư
 
 **##Cách Sử Dụng**
 	1. Xác thực người dùng:
-	2. Đăng ký người dùng mới.
+		Tài khoản admin: admin@admin.com
+		Mật khẩu       : Admin123@
+	2. Đăng ký người dùng mới sẽ nhận role là "User"
 	3. Đăng nhập để lấy token JWT.
 	4. Các API có sẵn:
 
@@ -36,6 +38,9 @@ Dự án này là một ứng dụng API quản lý sản phẩm, cho phép ngư
 		POST /api/products: Thêm sản phẩm mới (Chỉ Admin).
 		PUT /api/products/{id}: Cập nhật thông tin sản phẩm (Chỉ Admin).
 		DELETE /api/products/{id}: Xóa sản phẩm (Chỉ Admin).
+		
+		PUT /api/users/update-role: Cập nhật role cho tài khoản khác (Chỉ Admin).
+		DELETE /api/users/{email}: Xóa tài khoản (Chỉ Admin).
 
 **##Unit Tests**
 Dự án có các bài kiểm tra đơn vị cho các controller bằng xUnit. Để chạy các bài kiểm tra:
