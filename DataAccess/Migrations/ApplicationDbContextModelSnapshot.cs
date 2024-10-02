@@ -8,7 +8,7 @@ using PM.DbContextt;
 
 #nullable disable
 
-namespace PM.Migrations
+namespace DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot

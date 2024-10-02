@@ -3,7 +3,9 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace PM.Migrations
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
+namespace DataAccess.Migrations
 {
     /// <inheritdoc />
     public partial class InitDb : Migration
@@ -30,7 +32,7 @@ namespace PM.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Role = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Role = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -60,7 +62,7 @@ namespace PM.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -171,6 +173,23 @@ namespace PM.Migrations
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Products",
+                columns: new[] { "Id", "Description", "Name", "Price", "Quantity" },
+                values: new object[,]
+                {
+                    { 1, "Description for Product 1", "Product 1", 100.00m, 10 },
+                    { 2, "Description for Product 2", "Product 2", 200.00m, 5 },
+                    { 3, "Description for Product 3", "Product 3", 300.00m, 15 },
+                    { 4, "Description for Product 4", "Product 4", 150.00m, 20 },
+                    { 5, "Description for Product 5", "Product 5", 250.00m, 8 },
+                    { 6, "Description for Product 6", "Product 6", 180.00m, 12 },
+                    { 7, "Description for Product 7", "Product 7", 220.00m, 18 },
+                    { 8, "Description for Product 8", "Product 8", 90.00m, 25 },
+                    { 9, "Description for Product 9", "Product 9", 300.00m, 30 },
+                    { 10, "Description for Product 10", "Product 10", 400.00m, 2 }
                 });
 
             migrationBuilder.CreateIndex(

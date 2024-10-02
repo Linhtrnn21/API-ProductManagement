@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Application.Models;
+using Microsoft.AspNetCore.Identity;
 using PM.Entities;
 using PM.Model;
 using System;
@@ -12,7 +13,7 @@ namespace Application.AppServices
     public interface IAuthService
     {
         Task Regiter(RegisterModel model);
-        Task<string> Login (LoginModel loginModel);
+        Task<LoginResponse> Login (LoginModel loginModel);
     }
 }
 

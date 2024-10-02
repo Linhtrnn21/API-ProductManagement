@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Application.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using PM.Entities;
 using PM.Model;
@@ -29,15 +30,26 @@ namespace Application.AppServices
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<string> Login(LoginModel loginModel)
+        public async Task<LoginResponse> Login(LoginModel loginModel)
         {
             var user = await _userManager.FindByEmailAsync(loginModel.Email);
-            if (user != null && await _userManager.CheckPasswordAsync(user, loginModel.Password))
+            if (user == null)
             {
-                var token = _userService.GenerateJwtToken(user);
-                return $"Token = {token}";
+                throw new KeyNotFoundException("User not found");
             }
-            throw new KeyNotFoundException("UserName or Password is inccorect");
+
+            if (!await _userManager.CheckPasswordAsync(user, loginModel.Password))
+            {
+                throw new UnauthorizedAccessException("Incorrect password");
+            }
+
+            var token = _userService.GenerateJwtToken(user);
+
+            return new LoginResponse
+            {
+                Token = token,
+                Message = "Login successful"
+            };
         }
 
         public async Task Regiter(RegisterModel model)

@@ -52,7 +52,15 @@ namespace API.Controllers
             }
             catch (KeyNotFoundException ex)
             {
-                return Unauthorized($"Message: {ex.Message}");
+                return NotFound(new { Message = ex.Message });
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Message = "An error occurred", Details = ex.Message });
             }
         }
     }

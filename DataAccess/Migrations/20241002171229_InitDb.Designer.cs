@@ -9,10 +9,10 @@ using PM.DbContextt;
 
 #nullable disable
 
-namespace PM.Migrations
+namespace DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240930194909_InitDb")]
+    [Migration("20241002171229_InitDb")]
     partial class InitDb
     {
         /// <inheritdoc />
@@ -201,7 +201,6 @@ namespace PM.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Role")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SecurityStamp")
@@ -236,7 +235,6 @@ namespace PM.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
@@ -252,6 +250,88 @@ namespace PM.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Products");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Description = "Description for Product 1",
+                            Name = "Product 1",
+                            Price = 100.00m,
+                            Quantity = 10
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Description = "Description for Product 2",
+                            Name = "Product 2",
+                            Price = 200.00m,
+                            Quantity = 5
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Description = "Description for Product 3",
+                            Name = "Product 3",
+                            Price = 300.00m,
+                            Quantity = 15
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Description = "Description for Product 4",
+                            Name = "Product 4",
+                            Price = 150.00m,
+                            Quantity = 20
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Description = "Description for Product 5",
+                            Name = "Product 5",
+                            Price = 250.00m,
+                            Quantity = 8
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Description = "Description for Product 6",
+                            Name = "Product 6",
+                            Price = 180.00m,
+                            Quantity = 12
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Description = "Description for Product 7",
+                            Name = "Product 7",
+                            Price = 220.00m,
+                            Quantity = 18
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Description = "Description for Product 8",
+                            Name = "Product 8",
+                            Price = 90.00m,
+                            Quantity = 25
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Description = "Description for Product 9",
+                            Name = "Product 9",
+                            Price = 300.00m,
+                            Quantity = 30
+                        },
+                        new
+                        {
+                            Id = 10,
+                            Description = "Description for Product 10",
+                            Name = "Product 10",
+                            Price = 400.00m,
+                            Quantity = 2
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
