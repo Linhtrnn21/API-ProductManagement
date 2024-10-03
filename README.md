@@ -26,6 +26,7 @@ Dự án này là một ứng dụng API quản lý sản phẩm, cho phép ngư
 
 
 **##Cách Sử Dụng**
+	Vì đây là database ở local nên cần migration và update database
 	1. Xác thực người dùng:
 		Tài khoản admin: admin@admin.com
 		Mật khẩu       : Admin123@
